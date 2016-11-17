@@ -1,11 +1,4 @@
-/*
------QUESTIONS-----
-
-1) None of the paddles are moving. Why? Is it my keyboard input? Or my velocity equation? Or my position equation?
-
-2) How do I monitor collisions between the ball and the paddles? Should I like, keep tabs on the top and bottom of the paddles? or is there an easier way?
-
-*/
+// Weird collision stuff going on, but pretty much done
 
 #ifdef _WINDOWS
 #include <GL/glew.h>
@@ -23,7 +16,8 @@
 #define RESOURCE_FOLDER "NYUCodebase.app/Contents/Resources/"
 #endif
 
-#define CONVERT2RADIANS 3.14159265 / 180
+#define CONVERT2RADIANS 3.14159265 / 180.0
+#define RAND_MAX = 360;
 
 SDL_Window* displayWindow;
 
@@ -42,6 +36,15 @@ GLuint LoadTexture(const char *image_path) {
 	SDL_FreeSurface(surface);
 
 	return textureID;
+}
+
+bool collision(float box1PositionX, float box1PositionY, float box1Width, float box1Height, float box2PositionX, float box2PositionY, float box2Width, float box2Height) {
+	if ((box1PositionY - (box1Height/2) > box2PositionY + (box2Height/2)) || (box1PositionY + (box1Height/2) < box2PositionY - (box2Height/2)) || (box1PositionX - (box1Width/2) > box2PositionX + (box2Width/2)) || (box1PositionX + (box1Width/2) < box2PositionX - (box2Width/2))) {
+		return false;
+	}
+	else {
+		return true;
+	}
 }
 
 int main(int argc, char *argv[])
@@ -73,14 +76,21 @@ int main(int argc, char *argv[])
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	float leftPaddlePositionY = 0.0f;
+	float leftPaddleHeight = 0.7f;
+	float leftPaddleWidth = 0.25f;
 	float rightPaddlePositionY = 0.0f;
+	float rightPaddleHeight = 0.7f;
+	float rightPaddleWidth = 0.25f;
 	float ballPositionX = 0.0f;
 	float ballPositionY = 0.0f;
+	float ballHeight = 0.1f;
+	float ballWidth = 0.1f;
 
 	float leftPaddleVelocityY = 0.0f;
 	float rightPaddleVelocityY = 0.0f;
-	float ballVelocityX = 0.0f;
-	float ballVelocityY = 0.0f;
+	float ballVelocityX = 2.0f;
+	float ballVelocityY = 2.0f;
+	int ballAngle = rand();
 
 	float lastFrameTicks = 0.0f;
 
@@ -97,80 +107,114 @@ int main(int argc, char *argv[])
 		float elapsed = ticks - lastFrameTicks;
 		lastFrameTicks = ticks;
 
+		leftPaddlePositionY += leftPaddleVelocityY * elapsed;
+		rightPaddlePositionY += rightPaddleVelocityY * elapsed;
+
+		ballPositionX += ballVelocityX * elapsed * cos(ballAngle * CONVERT2RADIANS);
+		ballPositionY += ballVelocityY * elapsed * sin(ballAngle * CONVERT2RADIANS);
+
+		if (ballPositionX > 3.55 || ballPositionX < -3.55) {
+			done = true;
+		}
+
+		if (ballPositionY >= 2.0f) {
+			if (ballVelocityX > 0.0f) {
+				ballAngle += 90.0f;
+			}
+			else {
+				ballAngle -= 90.0f;
+			}
+		}
+		else if (ballPositionY <= -2.0f) {
+			if (ballVelocityX > 0.0f) {
+				ballAngle += 90.0f;
+			}
+			else {
+				ballAngle -= 90.0f;
+			}
+		}
+
+		if (collision(-3.175f, leftPaddlePositionY, leftPaddleWidth, leftPaddleHeight, ballPositionX, ballPositionY, ballWidth, ballHeight)) {
+		ballAngle += 180.0f;
+		}
+		else if (collision(3.175f, rightPaddlePositionY, rightPaddleWidth, rightPaddleHeight, ballPositionX, ballPositionY, ballWidth, ballHeight)) {
+		ballAngle += 180.0f;
+		}
+
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		const Uint8 *keys = SDL_GetKeyboardState(NULL);
 
+		leftPaddleVelocityY = 0.0f;
+		rightPaddleVelocityY = 0.0f;
+
 		if (keys[SDL_SCANCODE_UP]) {
-			leftPaddleVelocityY = 2.0;
+			rightPaddleVelocityY = 2.0f;
 		}
 		else if (keys[SDL_SCANCODE_DOWN]) {
-			leftPaddleVelocityY = -2.0;
+			rightPaddleVelocityY = -2.0f;
 		}
-		else if (keys[SDL_SCANCODE_W]) {
-			rightPaddleVelocityY = 2.0;
+		if (keys[SDL_SCANCODE_W]) {
+			leftPaddleVelocityY = 2.0f;
 		}
 		else if (keys[SDL_SCANCODE_S]) {
-			rightPaddleVelocityY = -2.0;
+			leftPaddleVelocityY = -2.0f;
 		}
+
+		if ((leftPaddlePositionY + (leftPaddleHeight / 2)) > 2.0f) {
+			leftPaddleVelocityY = 0.0f;
+			leftPaddlePositionY = 1.99 - leftPaddleHeight/2;
+		}
+		else if ((leftPaddlePositionY - (leftPaddleHeight / 2)) < -2.0f) {
+			leftPaddleVelocityY = 0.0f;
+			leftPaddlePositionY = -1.99 + leftPaddleHeight/2;
+		}
+
+		if ((rightPaddlePositionY + (rightPaddleHeight / 2)) > 2.0f) {
+			rightPaddleVelocityY = 0.0f;
+			rightPaddlePositionY = 1.99 - rightPaddleHeight / 2;
+		}
+		else if ((rightPaddlePositionY - (rightPaddleHeight / 2)) < -2.0f) {
+			rightPaddleVelocityY = 0.0f;
+			rightPaddlePositionY = -1.99 + rightPaddleHeight / 2;
+		}
+
+		program.setProjectionMatrix(projectionMatrix);
+		program.setViewMatrix(viewMatrix);
 
 		float centerLineVertices[] = {0.05, 2.0, -0.05, 2.0, -0.05, -2.0, 0.05, 2.0, -0.05, -2.0, 0.05, -2.0};
 		glVertexAttribPointer(program.positionAttribute, 2, GL_FLOAT, false, 0, centerLineVertices);
 		glEnableVertexAttribArray(program.positionAttribute);
-
+		program.setModelMatrix(centerLineModelMatrix);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
-
 		glDisableVertexAttribArray(program.positionAttribute);
 
 		float leftPaddleVertices[] = {-3.05, 0.35, -3.30, 0.35, -3.30, -0.35, -3.05, 0.35, -3.30, -0.35, -3.05, -0.35};
 		glVertexAttribPointer(program.positionAttribute, 2, GL_FLOAT, false, 0, leftPaddleVertices);
 		glEnableVertexAttribArray(program.positionAttribute);
-
+		leftPaddleModelMatrix.identity();
+		leftPaddleModelMatrix.Translate(0, leftPaddlePositionY, 0);
+		program.setModelMatrix(leftPaddleModelMatrix);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
-
 		glDisableVertexAttribArray(program.positionAttribute);
 
 		float rightPaddleVertices[] = { 3.05, 0.35, 3.30, 0.35, 3.30, -0.35, 3.05, 0.35, 3.30, -0.35, 3.05, -0.35 };
 		glVertexAttribPointer(program.positionAttribute, 2, GL_FLOAT, false, 0, rightPaddleVertices);
 		glEnableVertexAttribArray(program.positionAttribute);
-
+		rightPaddleModelMatrix.identity();
+		rightPaddleModelMatrix.Translate(0, rightPaddlePositionY, 0);
+		program.setModelMatrix(rightPaddleModelMatrix);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
-
 		glDisableVertexAttribArray(program.positionAttribute);
 
-		/*
-
-		float ballVertices[] = {};
+		float ballVertices[] = {0.05, 0.05, -0.05, 0.05, -0.05, -0.05, 0.05, 0.05, -0.05, -0.05, 0.05, -0.05};
 		glVertexAttribPointer(program.positionAttribute, 2, GL_FLOAT, false, 0, ballVertices);
 		glEnableVertexAttribArray(program.positionAttribute);
-
-		glDrawArrays(GL_TRIANGLES, 0, 6);
-
-		glDisableVertexAttribArray(program.positionAttribute);
-
-		*/
-
-		leftPaddlePositionY += leftPaddleVelocityY * elapsed * sin(90 * CONVERT2RADIANS);
-		rightPaddlePositionY += rightPaddleVelocityY * elapsed * sin(90 * CONVERT2RADIANS);
-
-		leftPaddleModelMatrix.Translate(0, leftPaddlePositionY, 0);
-
-		ballPositionX += ballVelocityX * elapsed;
-		ballPositionY += ballVelocityY * elapsed;
-
-		if (ballPositionX >= 3.55 || ballPositionX <= -3.55) {
-			done = true;
-		}
-
-		if (ballPositionY >= 2.0 || ballPositionY <= -2.0) {
-			ballVelocityY *= -1;
-		}
-		program.setModelMatrix(centerLineModelMatrix);
-		program.setModelMatrix(leftPaddleModelMatrix);
-		program.setModelMatrix(rightPaddleModelMatrix);
+		ballModelMatrix.identity();
+		ballModelMatrix.Translate(ballPositionX, ballPositionY, 0);
 		program.setModelMatrix(ballModelMatrix);
-		program.setProjectionMatrix(projectionMatrix);
-		program.setViewMatrix(viewMatrix);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		glDisableVertexAttribArray(program.positionAttribute);
 
 		SDL_GL_SwapWindow(displayWindow);
 	}
