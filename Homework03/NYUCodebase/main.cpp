@@ -219,7 +219,7 @@ int main(int argc, char *argv[])
 
 	glUseProgram(program.programID);
 
-	//Mix_PlayMusic(music, 0);
+	//Mix_PlayMusic(music, -1);
 
 	SDL_Event event;
 	bool done = false;
