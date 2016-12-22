@@ -1,5 +1,7 @@
 /*
 Aliens randomly jump and I don't know why (probably just a glitch that happens infrequently, but still annoying)
+
+Also added music and sound effects to this homework as part of the "playing audio" extra credit assignment
 */
 
 #ifdef _WINDOWS
