@@ -1,17 +1,30 @@
-﻿Build started 9/28/2016 11:33:51 PM.
-     1>Project "C:\CS3113\project_template\Windows\NYUCodebase\NYUCodebase\NYUCodebase.vcxproj" on node 2 (Build target(s)).
+﻿Build started 12/22/2016 2:18:28 AM.
+     1>Project "C:\Users\Owner\Documents\Visual Studio 2013\Projects\Homework05\NYUCodebase\NYUCodebase.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\SDL2\include /IC:\SDL2_image\include /IC:\glew\include /IC:\SDL2_mixer\include /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _WINDOWS /D _MBCS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
          main.cpp
-     1>c:\cs3113\project_template\windows\nyucodebase\nyucodebase\main.cpp(54): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\owner\documents\visual studio 2013\projects\homework05\nyucodebase\main.cpp(64): warning C4244: '-=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\owner\documents\visual studio 2013\projects\homework05\nyucodebase\main.cpp(69): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\owner\documents\visual studio 2013\projects\homework05\nyucodebase\main.cpp(74): warning C4244: '-=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\owner\documents\visual studio 2013\projects\homework05\nyucodebase\main.cpp(79): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\owner\documents\visual studio 2013\projects\homework05\nyucodebase\main.cpp(115): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\owner\documents\visual studio 2013\projects\homework05\nyucodebase\main.cpp(118): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\owner\documents\visual studio 2013\projects\homework05\nyucodebase\main.cpp(131): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\owner\documents\visual studio 2013\projects\homework05\nyucodebase\main.cpp(132): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\owner\documents\visual studio 2013\projects\homework05\nyucodebase\main.cpp(134): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\owner\documents\visual studio 2013\projects\homework05\nyucodebase\main.cpp(144): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\owner\documents\visual studio 2013\projects\homework05\nyucodebase\main.cpp(161): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\owner\documents\visual studio 2013\projects\homework05\nyucodebase\main.cpp(192): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\owner\documents\visual studio 2013\projects\homework05\nyucodebase\main.cpp(196): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\owner\documents\visual studio 2013\projects\homework05\nyucodebase\main.cpp(225): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\owner\documents\visual studio 2013\projects\homework05\nyucodebase\main.cpp(316): warning C4018: '<' : signed/unsigned mismatch
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\CS3113\project_template\Windows\NYUCodebase\Debug\NYUCodebase.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:\SDL2_mixer\lib\x86 /LIBPATH:C:\SDL2\lib\x86 /LIBPATH:C:\SDL2_image\lib\x86 /LIBPATH:C:\glew\lib\Release\Win32 SDL2.lib SDL2_mixer.lib glew32.lib SDL2main.lib SDL2_image.lib OpenGL32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\CS3113\project_template\Windows\NYUCodebase\Debug\NYUCodebase.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\CS3113\project_template\Windows\NYUCodebase\Debug\NYUCodebase.lib" /MACHINE:X86 Debug\main.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Owner\Documents\Visual Studio 2013\Projects\Homework05\Debug\NYUCodebase.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:\SDL2_mixer\lib\x86 /LIBPATH:C:\SDL2\lib\x86 /LIBPATH:C:\SDL2_image\lib\x86 /LIBPATH:C:\glew\lib\Release\Win32 SDL2.lib SDL2_mixer.lib glew32.lib SDL2main.lib SDL2_image.lib OpenGL32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Owner\Documents\Visual Studio 2013\Projects\Homework05\Debug\NYUCodebase.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Owner\Documents\Visual Studio 2013\Projects\Homework05\Debug\NYUCodebase.lib" /MACHINE:X86 Debug\main.obj
          Debug\Matrix.obj
          Debug\ShaderProgram.obj
-     1>MSVCRTD.lib(cinitexe.obj) : warning LNK4098: defaultlib 'msvcrt.lib' conflicts with use of other libs; use /NODEFAULTLIB:library
-         NYUCodebase.vcxproj -> C:\CS3113\project_template\Windows\NYUCodebase\Debug\NYUCodebase.exe
-     1>Done Building Project "C:\CS3113\project_template\Windows\NYUCodebase\NYUCodebase\NYUCodebase.vcxproj" (Build target(s)).
+         NYUCodebase.vcxproj -> C:\Users\Owner\Documents\Visual Studio 2013\Projects\Homework05\Debug\NYUCodebase.exe
+     1>Done Building Project "C:\Users\Owner\Documents\Visual Studio 2013\Projects\Homework05\NYUCodebase\NYUCodebase.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:03.65
+Time Elapsed 00:00:06.18

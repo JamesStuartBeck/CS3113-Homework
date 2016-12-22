@@ -1,9 +1,4 @@
-/*
-Platformer:
-	-Collision function is sorta weird. Collisions on the right side of the entity handle differently than collisions on the left side of the entity
-	-Admittingly, the collision between the player and the enemy is sorta janky
-	-Repurposing the entity class into the enemy class is also pretty janky
-*/
+// Is a little glitchy, not gonna lie
 
 #ifdef _WINDOWS
 #include <GL/glew.h>
@@ -490,7 +485,7 @@ int main(int argc, char *argv[])
 	GLuint spriteSheetTexture = LoadTexture("spritesheet_rgba.png");
 
 	Entity player({ 1.0f, 5.0f }, { 0.0f, 0.0f }, { 0.0f, 0.0f }, { 0.5f, 0.5f }, 0.0f, spriteSheetTexture, 79, 1);
-	Enemy enemy({ 3.0f, 5.0f }, { 0.0f, 0.0f }, { -1.0f, 0.0f }, { 0.5f, 0.5f }, 0.0f, spriteSheetTexture, 470, 1);
+	Enemy enemy({ 5.0f, 5.0f }, { 0.0f, 0.0f }, { -1.0f, 0.0f }, { 0.5f, 0.5f }, 0.0f, spriteSheetTexture, 470, 1);
 
 	float lastFrameTicks = 0.0f;
 

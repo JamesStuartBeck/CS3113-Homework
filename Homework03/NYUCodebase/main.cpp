@@ -1,7 +1,5 @@
 /*
 Aliens randomly jump and I don't know why (probably just a glitch that happens infrequently, but still annoying)
-Laser sound effect won't work
-Music doesn't play
 */
 
 #ifdef _WINDOWS
@@ -30,6 +28,8 @@ using namespace std;
 
 SDL_Window* displayWindow;
 
+// Function to load a texture for sprites
+// Provided by Ivan Safrin
 GLuint LoadTexture(const char *image_path){
 	SDL_Surface *surface = IMG_Load(image_path);
 	GLuint textureID;
@@ -42,6 +42,8 @@ GLuint LoadTexture(const char *image_path){
 	return textureID;
 }
 
+// Sprite class
+// Contains all the info for a sprite
 class SheetSprite {
 public:
 	SheetSprite(unsigned int textureID, float u, float v, float width, float height, float size, ShaderProgram *program) : 
@@ -76,6 +78,8 @@ public:
 	float size;
 };
 
+// Entity class
+// All enemies and the player are entities
 class Entity {
 public:
 	Entity(std::vector<float> position, std::vector<float> velocity, vector<float> size, float rotation, SheetSprite sprite) :
@@ -90,6 +94,8 @@ public:
 	SheetSprite sprite;
 };
 
+// Function to draw text
+// Provided by Ivan Safrin
 void drawText(ShaderProgram *program, int fontTexture, std::string text, float size, float spacing, float xPos, float yPos) {
 	float texture_size = 1.0f / 16.0f;
 	vector<float> vertexData;
@@ -134,10 +140,11 @@ vector<Entity> lasers;
 int lasersIterator = 0;
 int deadAliens = 0;
 
+// shoot laser function
 void shootLaser(float positionX, float positionY) {
 	lasers[lasersIterator].velocity[1] = 5.0f;
-	lasers[lasersIterator].position = { positionX, positionY };
-	if (lasersIterator < MAX_LASERS) {
+	lasers[lasersIterator].position = { positionX, positionY }; // Sets a laser already within the array to the player's position
+	if (lasersIterator < MAX_LASERS) { // Modifies iterator so that lasers can be reused
 		lasersIterator++;
 	}
 	else {
@@ -145,6 +152,7 @@ void shootLaser(float positionX, float positionY) {
 	}
 }
 
+// Point-Box collision function to see if a laser hits an enemy
 bool laserCollision(float laserX, float laserY, float shipX, float shipY, float width, float height) {
 	if (((laserX < shipX + width/2) && (laserX > shipX - width/2)) && ((laserY > shipY - height/2) && (laserY < shipY + height/2))) {
 		return true;
@@ -206,20 +214,19 @@ int main(int argc, char *argv[])
 		lasers.push_back(newLaser);
 	}
 
+	// Sound effects and music
 	Mix_Chunk *laserSound;
 	laserSound = Mix_LoadWAV("laser.wav");
-
 	Mix_Chunk *explosion;
 	explosion = Mix_LoadWAV("explosion.wav");
-
 	Mix_Music *music;
-//	music = Mix_LoadMUS("music.mp3");
+	music = Mix_LoadMUS("Ketsa_-_This_Bright_Day.mp3");
 
 	float lastFrameTicks = 0.0f;
 
 	glUseProgram(program.programID);
 
-	//Mix_PlayMusic(music, -1);
+	Mix_PlayMusic(music, -1);
 
 	SDL_Event event;
 	bool done = false;
@@ -372,6 +379,7 @@ int main(int argc, char *argv[])
 				}
 			}
 
+			// Draws aliens
 			for (int i = 0; i < aliens.size(); ++i) {
 				aliens[i].position[0] += aliens[i].velocity[0] * elapsed;
 				aliens[i].Draw(&program);
@@ -396,9 +404,10 @@ int main(int argc, char *argv[])
 		SDL_GL_SwapWindow(displayWindow);
 	}
 
+	// Frees sound effects
 	Mix_FreeChunk(laserSound);
 	Mix_FreeChunk(explosion);
-//	Mix_FreeMusic(music);
+	Mix_FreeMusic(music);
 	SDL_Quit();
 	return 0;
 }
